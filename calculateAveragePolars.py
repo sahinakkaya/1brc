@@ -16,6 +16,7 @@ grouped = (
         pl.min("measurement").alias("min_measurement"),
         pl.mean("measurement").alias("mean_measurement"),
         pl.max("measurement").alias("max_measurement"),
+        pl.std("measurement").alias("std_measurement"),
     )
     .sort("station_name")
     .collect(streaming=True)
@@ -25,7 +26,7 @@ grouped = (
 print("{", end="")
 for data in grouped.iter_rows():
     print(
-        f"{data[0]}={data[1]:.1f}/{data[2]:.1f}/{data[3]:.1f}",
+        f"{data[0]}={data[1]:.1f}/{data[2]:.1f}/{data[3]:.1f}/{data[4]:.1f}",
         end=", ",
     )
 print("\b\b} ")
