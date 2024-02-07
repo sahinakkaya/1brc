@@ -104,7 +104,7 @@ I added standard deviation calculations to first two implementations. Here are t
 
 ## Performance (on a MacBook Pro M2 Pro 16GB, input file: 100M rows)
 | Interpreter |  Script | version | user | system | cpu | total |
-| ----------- | ------ | ---- | ------ | --- | ----- |
+| ----------- | ------ | ---- | ------ | --- | ----- | ---- |
 | python3 | calculateAverage.py | original | 42.32 | 0.58 | 773% | 5.546 |
 | python3 | calculateAverage.py | this-repo | 55.98 | 0.58 | 783% | 7.219 |
 | python3 | calculateAveragePolars.py | original | 11.11 | 0.55 | 707% | 1.648 |
