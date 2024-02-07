@@ -100,7 +100,13 @@ There were 4 implementations in the original repository.
 - calculateAveragePypy.py
 ```
 
-I added standard deviation calculations to first two implementations. Here are the results:
+I added standard deviation calculations to first two implementations. 
+
+In `calculateAverage.py`, input file is processed chunk by chunk. These chunks are then merged to get the final result. In the classical stddev formula, you use mean while processing your input list. But I didn't want to first calculate mean and then process the file again to calculate stddev, so I used [Welford's algorithm](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Welford%27s_online_algorithm) which allowed me to calculate mean and stddev with a single iteration. Then I used the solution described [here](https://stackoverflow.com/questions/7753002/adding-combining-standard-deviations) to combine multiple stddev's into one.
+
+For `calculateAveragePolars.py`, I didn't need to do much. I just used the function provided by `polars` library: `pl.std("measurement").alias("std_measurement")`.
+
+And here are the results:
 
 ## Performance (on a MacBook Pro M2 Pro 16GB, input file: 100M rows)
 | Interpreter |  Script | version | user | system | cpu | total |
@@ -111,6 +117,3 @@ I added standard deviation calculations to first two implementations. Here are t
 | python3 | calculateAveragePolars.py | this-repo | 21.07 | 4.92 | 639% | 4.065 |
 
 
-In `calculateAverage.py`, input file is processed chunk by chunk. These chunks are then merged to get the final result. In the classical stddev formula, you use mean while processing your input list. But I didn't want to first calculate mean and then process the file again to calculate stddev, so I used [Welford's algorithm](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Welford%27s_online_algorithm) which allowed me to calculate mean and stddev with a single iteration. Then I used the solution described [here](https://stackoverflow.com/questions/7753002/adding-combining-standard-deviations) to combine multiple stddev's into one.
-
-For `calculateAveragePolars.py`, I didn't need to do much. I just used the function provided by `polars` library: `pl.std("measurement").alias("std_measurement")`.
