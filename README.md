@@ -1,5 +1,8 @@
 # 1BRC: One Billion Row Challenge in Python
 
+This is fork of https://github.com/ifnesi/1brc. See [Changes](#changes)
+section to know what is changed.
+
 Python implementation of Gunnar's 1 billion row challenge:
 - https://www.morling.dev/blog/one-billion-row-challenge
 - https://github.com/gunnarmorling/1brc
@@ -85,3 +88,29 @@ _result[3] += 1
 ```
 
 Python can be surprising sometimes.
+
+## Changes
+In the original 1BRC you need to find min, mean, max for all stations. I thought it might be interesting challenge if we add one more statistics, standard deviation, and compare how it would affect the performance.
+
+There were 4 implementations in the original repository.
+```
+- calculateAverage.py
+- calculateAveragePolars.py
+- calculateAverageDuckDB.py
+- calculateAveragePypy.py
+```
+
+I added standard deviation calculations to first two implementations. Here are the results:
+
+## Performance (on a MacBook Pro M2 Pro 16GB, input file: 100M rows)
+| Interpreter |  Script | version | user | system | cpu | total |
+| ----------- | ------ | ---- | ------ | --- | ----- |
+| python3 | calculateAverage.py | original | 42.32 | 0.58 | 773% | 5.546 |
+| python3 | calculateAverage.py | this-repo | 55.98 | 0.58 | 783% | 7.219 |
+| python3 | calculateAveragePolars.py | original | 11.11 | 0.55 | 707% | 1.648 |
+| python3 | calculateAveragePolars.py | this-repo | 21.07 | 4.92 | 639% | 4.065 |
+
+
+In `calculateAverage.py`, input file is processed chunk by chunk. These chunks are then merged to get the final result. In the classical stddev formula, you use mean while processing your input list. But I didn't want to first calculate mean and then process the file again to calculate stddev, so I used [Welford's algorithm](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Welford%27s_online_algorithm) which allowed me to calculate mean and stddev with a single iteration. Then I used the solution described [here](https://stackoverflow.com/questions/7753002/adding-combining-standard-deviations) to combine multiple stddev's into one.
+
+For `calculateAveragePolars.py`, I didn't need to do much. I just used the function provided by `polars` library: `pl.std("measurement").alias("std_measurement")`.
