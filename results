@@ -1,0 +1,7 @@
+
+python3 calculateAverage.py  42.32s user 0.58s system 773% cpu 5.546 total
+python3 calculateAverage.py  55.98s user 0.58s system 783% cpu 7.219 total
+
+python3 calculateAveragePolars.py  11.11s user 0.55s system 707% cpu 1.648 total
+python3 calculateAveragePolars.py  21.07s user 4.92s system 639% cpu 4.065 total
+
