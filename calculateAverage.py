@@ -119,11 +119,12 @@ def process_file(
                     _result[1] = measurements[1]
 
                 s1 = _result[5] + measurements[5]
-                s2 = sum(i[3] * (i[4] - ((_result[2] + measurements[2] )/ (_result[3] + measurements[3])))**2 for i in [_result, measurements])
+                mean = ((_result[2] + measurements[2] )/ (_result[3] + measurements[3]))
+                s2 = _result[3] * (_result[4] - mean)**2  + (measurements[3] * (measurements[4] - mean)**2)
                 _result[5] = (s1 + s2)
                 _result[2] += measurements[2]
                 _result[3] += measurements[3]
-                _result[4] = _result[2] / _result[3]
+                _result[4] = mean
 
 
 
