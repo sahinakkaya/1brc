@@ -75,8 +75,7 @@ def _process_file_chunk(
                     measurement, # max
                     measurement, # sum
                     1, # count
-                    measurement, # mean
-                    0, # m2
+                    measurement * measurement, # sumQ
                 ]  # min, max, sum, count, mean, m2
             else:
                 _result = result[location]
@@ -86,9 +85,7 @@ def _process_file_chunk(
                     _result[1] = measurement
                 _result[2] += measurement
                 _result[3] += 1
-                delta =  measurement - _result[4]
-                _result[4] += delta / (_result[3])
-                _result[5] += (delta) * (measurement - _result[4])
+                _result[4] += measurement * measurement
     return result
 
 
@@ -118,12 +115,9 @@ def process_file(
                 if measurements[1] > _result[1]:
                     _result[1] = measurements[1]
 
-                s1 = _result[5] + measurements[5]
-                s2 = sum(i[3] * (i[4] - ((_result[2] + measurements[2] )/ (_result[3] + measurements[3])))**2 for i in [_result, measurements])
-                _result[5] = (s1 + s2)
                 _result[2] += measurements[2]
                 _result[3] += measurements[3]
-                _result[4] = _result[2] / _result[3]
+                _result[4] += measurements[4]
 
 
 
@@ -131,7 +125,11 @@ def process_file(
     # Print final results
     print("{", end="")
     for location, measurements in sorted(result.items()):
-        std = (measurements[5] / (measurements[3] - 1)) ** 0.5
+        std = (
+            (measurements[4] -
+            (measurements[2] * measurements[2]) / measurements[3]) *
+            (1 / (measurements[3] - 1))
+            ) ** 0.5
         print(
             f"{location}={measurements[0]:.1f}/{(measurements[2] / measurements[3]) if measurements[3] !=0 else 0:.1f}/{measurements[1]:.1f}/{std:.1f}",
             end=", ",

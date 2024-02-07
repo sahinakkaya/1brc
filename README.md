@@ -112,7 +112,7 @@ And here are the results:
 | Interpreter |  Script | version | user | system | cpu | total |
 | ----------- | ------ | ---- | ------ | --- | ----- | ---- |
 | python3 | calculateAverage.py | original | 42.32 | 0.58 | 773% | 5.546 |
-| python3 | calculateAverage.py | this-repo | 55.98 | 0.58 | 783% | 7.219 |
+| python3 | calculateAverage.py | this-repo | ~~55.98~~<br>46.41 | ~~0.58~~<br>0.61 | ~~783%~~<br>767% | ~~7.219~~<br>6.126 |
 | python3 | calculateAveragePolars.py | original | 11.11 | 0.55 | 707% | 1.648 |
 | python3 | calculateAveragePolars.py | this-repo | 21.07 | 4.92 | 639% | 4.065 |
 
